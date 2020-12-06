@@ -13,9 +13,35 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf.urls.static import static
+from django.views.generic import RedirectView
+
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="USD TO MX EXCHANGE RATE API",
+        default_version='v1',
+        description="API to obtain latest exchange from different sources",
+        contact=openapi.Contact(email="lennhv@gmail.com"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', RedirectView.as_view(url='doc/swagger/', permanent=True)),
+    path('api/v1/', include('exchanges.urls')),
+    path('doc/swagger/', schema_view.with_ui('swagger',
+                cache_timeout=0), name='schema-swagger-ui'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
