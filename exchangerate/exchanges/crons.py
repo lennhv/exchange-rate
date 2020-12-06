@@ -33,9 +33,6 @@ class BmxCronJob(CronJobBase):
         if not data:
             log.info("Empty data from Bmx Endpoint")
             return
-        {"bmx": {"series": [{"idSerie": "SF60653",
-                             "titulo": "Tipo de cambio pesos por dólar E.U.A. Tipo de cambio para solventar obligaciones denominadas en moneda extranjera Fecha de liquidación",
-                             "datos": [{"fecha": "05/12/2020", "dato": "19.9083"}]}]}}
         #
         CurrencyExchage.objects.insert(
             CurrencyExchage.BMX,
