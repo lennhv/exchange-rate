@@ -8,3 +8,10 @@ services:
         - POSTGRES_USER=${DB_USER}
         - POSTGRES_DB=${DB_NAME}
         - POSTGRES_PASSWORD=${DB_PASSWORD}
+  cache:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+    entrypoint:
+      - memcached
+      - -m 32
