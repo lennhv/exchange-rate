@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_yasg',
+    'django_cron',
     'exchanges',
 ]
 
@@ -164,6 +165,35 @@ REST_FRAMEWORK = {
         'user': '60/minute'
     }
 }
+
+# cronjobs
+# https://django-cron.readthedocs.io/en/latest/
+
+CRON_CLASSES = [
+    "exchanges.crons.BmxCronJob",
+    "exchanges.crons.BanxicoCronJob",
+    "exchanges.crons.FixerCronJob",
+]
+
+
+# BMX
+# https://www.banxico.org.mx/SieAPIRest/service/v1/
+
+BMX_ENDPOINT = 'https://www.banxico.org.mx/SieAPIRest/service'
+BMX_TOKEN = env.str("BMX_TOKEN", default='')
+# Tipo de cambio pesos por dólar E.U.A. Tipo de cambio para solventar obligaciones
+# denominadas en moneda extranjera Fecha de liquidación
+BMX_DOLLAR_SERIE = 'SF60653'
+
+# Banxico
+# https://www.banxico.org.mx/tipcamb/tipCamMIAction.do
+BANXICO_ENDPOINT = 'https://www.banxico.org.mx/tipcamb/tipCamIHAction.do'
+                            
+# Fixer API
+# https://fixer.io/
+FIXER_ENDPOINT = 'http://data.fixer.io/api/latest'
+FIXER_TOKEN = env.str("FIXER_TOKEN", default='')
+
 
 
 # logging
