@@ -33,3 +33,18 @@ class CurrencyExchageApiTest(APITestCase):
         response = self.client.get(reverse('exchanges:api-exchange'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 3)
+
+class CurrencyExchageApiThrottlingTest(APITestCase):
+    """ Test API throttling"""
+    
+    def setUp(self):
+        CurrencyExchage.objects.insert(CurrencyExchage.BMX, 20.19, date.today())
+        CurrencyExchage.objects.insert(CurrencyExchage.BANXICO, 19.98, date.today())
+        CurrencyExchage.objects.insert(CurrencyExchage.FIXER, 19.95, date.today())
+
+    def test_throttling(self):
+        """ throttling for anon user """
+        max_req = int(settings.REST_FRAMEWORK['DEFAULT_THROTTLE_RATES']['anon'].split('/')[0])
+        for i in range(max_req+1):
+            response = self.client.get(reverse('exchanges:api-exchange'))
+        self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
