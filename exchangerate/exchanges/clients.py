@@ -28,7 +28,7 @@ def _api_client(url, headers={}):
 def bmx_client(token, series, start_date=False, end_date=False):
     """ Bolsa Mexicana API
         https://www.banxico.org.mx/SieAPIRest/service/swagger-ui.html
-        
+
         params:
             token: api token
             series: list of series to consult
@@ -70,12 +70,12 @@ def fixer_client(api_key, from_currency='USD', to_currencies=['MXN']):
 
     # API allows get many currencies in the same request
     to_currencies = ','.join(to_currencies)
-    
+
     url = settings.FIXER_ENDPOINT + \
         f'?access_key={api_key}&base={from_currency}&symbols={to_currencies}'
-    
+
     respose = _api_client(url)
-    
+
     return respose
 
 
@@ -87,22 +87,22 @@ def banxico_client(start_date=False, end_date=False):
 
         returns data dict
     """
-    
+
     if not start_date:
-        start_date = datetime.date.today()
+        start_date = datetime.date.today().strftime('%d/%m/%Y')
     if not end_date:
-        end_date = datetime.date.today()
+        end_date = datetime.date.today().strftime('%d/%m/%Y')
     url = settings.BANXICO_ENDPOINT
 
     post_data = {
         'idioma': 'sp',
         'salida': 'XLS',
-        'fechaInicial': start_date.strftime('%d/%m/%Y'),
-        'fechaFinal': end_date.strftime('%d/%m/%Y'),
+        'fechaInicial': start_date,
+        'fechaFinal': end_date,
     }
-   
+
     response = requests.post(url, data=post_data)
-   
+
     if response.status_code != 200:
         return {}
 
