@@ -12,6 +12,10 @@ drf-yasg = "*"
 django-environ = "*"
 psycopg2-binary = "*"
 python-memcached = "*"
+django-cron = "*"
+requests = "*"
+pandas = "*"
+xlrd = "*"
 
 [requires]
 python_version = "3.8"
