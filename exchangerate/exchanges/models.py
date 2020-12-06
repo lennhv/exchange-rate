@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
+from .managers import CurrencyExchageManager
 
 
 class CurrencyExchage(models.Model):
@@ -26,6 +27,8 @@ class CurrencyExchage(models.Model):
     rate = models.FloatField(_('rate'),)
     date = models.DateField(_('date'),)
     last_update = models.DateTimeField(_('last_update'),)
+
+    objects = CurrencyExchageManager()
 
     class Meta:
         verbose_name = _('currency exchange')
