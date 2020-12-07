@@ -51,6 +51,14 @@ python manage.py test
 ```
 python manage.py createusperuser
 ```
+- Run cronjobs to ensure that works fine
+```
+python manage.py runcrons
+```
+- Add command to cron, example
+```
+*/5 * * * * source /home/your-user/.bashrc && set -a && source /path/to/project/.env && set +a && source /path/to/project/.venv/bin/activate && python /path/to/project/exchangerate/manage.py runcrons
+```
 - Setup allowed host on settings.py
 - Setup your wsgi server and nginx, i recomend uWSGI
 - Go to your url 
